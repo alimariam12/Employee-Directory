@@ -11,25 +11,30 @@ class Table extends Component {
   };
 
   componentDidMount() {
-    API.getRandomUser()
-      .then((res) => this.setState({ users: res.data }))
-      .catch((err) => console.log(err));
-      console.log("helloooo", API.getRandomUser());
+   API.getRandomUser()
+   .then((res) => {
+        console.log(res);
+        this.setState({ employees: res.data.results })
+})
   }
 
   renderTableData() {
     return this.state.employees.map((each, index) => {
       return (
         <tr>
-          <td>{each.results.image}</td>
-          <td>{each.results.name}</td>
-          <td>{each.results.phone}</td>
-          <td>{each.results.email}</td>
-          <td>{each.results.location}</td>
+          {/* <td>{each.results.image}</td> */}
+          <img alt={each.picture.medium} src={each.picture.medium}/>
+          <td>{each.name.first}</td>
+          {/* <td>{each.name.last}</td> */}
+          {/* <td>{each.results.email}</td>
+          <td>{each.results.location}</td> */}
         </tr>
+        
       );
     });
   }
+  
+
   renderTableHeader() {
     let header = ["image", "name", "phone", "email", "location"];
     return header.map((key, index) => {
