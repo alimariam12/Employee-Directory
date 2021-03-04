@@ -23,11 +23,11 @@ class Table extends Component {
       return (
         <tr>
           {/* <td>{each.results.image}</td> */}
-          <img alt={each.picture.medium} src={each.picture.medium}/>
-          <td>{each.name.first}</td>
-          {/* <td>{each.name.last}</td> */}
-          {/* <td>{each.results.email}</td>
-          <td>{each.results.location}</td> */}
+          <img src={each.picture.thumbnail}/>
+          <td>{each.name.title + " " + each.name.first + " " + each.name.last }</td>
+          <td>{each.phone}</td>
+          <td>{each.email}</td>
+          <td>{each.dob.age}</td>
         </tr>
         
       );
@@ -36,7 +36,7 @@ class Table extends Component {
   
 
   renderTableHeader() {
-    let header = ["image", "name", "phone", "email", "location"];
+    let header = ["image", "name", "phone", "email", "age"];
     return header.map((key, index) => {
       return <th key={index}>{key.toUpperCase()}</th>;
     });
@@ -45,8 +45,8 @@ class Table extends Component {
   render() {
     //Whenever our class runs, render method will be called automatically, it may have already defined in the constructor behind the scene.
     return (
+      
       <div>
-        <h1 id="title">Employee Directory</h1>
         <table id="employees">
           <tbody>
             <tr>{this.renderTableHeader()}</tr>
