@@ -7,7 +7,7 @@ function App() {
   return (
     <div>
       <Navbar />
-<EmployeeTable />
+      <EmployeeTable />
       <Footer />
     </div>
   );
