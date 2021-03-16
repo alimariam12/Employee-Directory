@@ -1,30 +1,32 @@
 import React, { Component } from "react";
 import API from "../../utils/API";
 import "./style.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const sortTable = {
-  up: {
-    class: "sort-up",
-    fn: (a, b) => a.name - b.name,
-  },
-  down: {
-    class: "sort-down",
-    fn: (a, b) => b.name - a.name,
-  },
-  default: {
-    class: "sort",
-    fn: (a, b) => a,
-  },
-};
+
+
 class Table extends Component {
   state = {
-    //state is by default an object
+
     employees: [],
     users: "",
     search: "",
     currentSort: "default",
   };
+
+
+  sortBy = () => {
+    let sortedEmployee = this.state.employees.sort((a, b) =>
+      a.name > b.name ? 1 : -1
+    );
+    this.setState({ sortedEmployee });
+  };
+  sortById = () => {
+    let sortedEmployeeId = this.state.employees.sort((a, b) =>
+      a.id > b.id ? 1 : -1
+    );
+    this.setState({ sortedEmployeeId });
+  };
+
 
   componentDidMount() {
     API.getRandomUser().then((res) => {
@@ -34,10 +36,9 @@ class Table extends Component {
   }
 
   renderTableData() {
-    return this.state.employees.map((each, index) => {
+    return this.state.employees.sort(this.sortUser).map((each, index) => {
       return (
         <tr>
-          {/* <td>{each.results.image}</td> */}
           <img src={each.picture.thumbnail} alt={"Employee Profile Pics"} />
           <td>
             {each.name.title + " " + each.name.first + " " + each.name.last}
@@ -48,6 +49,7 @@ class Table extends Component {
         </tr>
       );
     });
+    
   }
 
   renderTableHeader() {
@@ -57,20 +59,7 @@ class Table extends Component {
     });
   }
 
-  onSortChange = () => {
-    const { currentSort } = this.state;
-    let nextSort;
-
-    if (currentSort === "down") nextSort = "up";
-    else if (currentSort === "up") nextSort = "default";
-    else if (currentSort === "default") nextSort = "down";
-
-    this.setState({
-      currentSort: nextSort,
-    });
-  };
   render() {
-    const { currentSort } = this.state;
     //Whenever our class runs, render method will be called automatically, it may have already defined in the constructor behind the scene.
     return (
       <div>
@@ -78,9 +67,6 @@ class Table extends Component {
           <tbody>
             <tr>
               {this.renderTableHeader()}
-              <button onClick={e => this.onSortChange(e, this.renderTableData[1])}>
-                <i className={`fas fa-${sortTable[currentSort].class}`} />
-              </button>
             </tr>
             {this.renderTableData()}
           </tbody>
