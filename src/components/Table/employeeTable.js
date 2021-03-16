@@ -13,16 +13,16 @@ class Table extends Component {
     currentSort: "default",
   };
 
-
-  sortBy = () => {
+ 
+  sortByName = () => {
     let sortedEmployee = this.state.employees.sort((a, b) =>
-      a.name > b.name ? 1 : -1
+      a.name.first > b.name.first ? 1 : -1
     );
     this.setState({ sortedEmployee });
   };
   sortById = () => {
     let sortedEmployeeId = this.state.employees.sort((a, b) =>
-      a.id > b.id ? 1 : -1
+      a.id.value > b.id.value ? 1 : -1
     );
     this.setState({ sortedEmployeeId });
   };
@@ -39,10 +39,10 @@ class Table extends Component {
     return this.state.employees.sort(this.sortUser).map((each, index) => {
       return (
         <tr>
+          <td>{each.id.value}</td>
           <img src={each.picture.thumbnail} alt={"Employee Profile Pics"} />
-          <td>
-            {each.name.title + " " + each.name.first + " " + each.name.last}
-          </td>
+          <td>{each.name.first}</td>
+          <td>{each.name.last}</td>
           <td>{each.phone}</td>
           <td>{each.email}</td>
           <td>{each.dob.age}</td>
@@ -53,7 +53,7 @@ class Table extends Component {
   }
 
   renderTableHeader() {
-    let header = ["image", "name", "phone", "email", "age"];
+    let header = [ "id","image", "First Name", "Last Name", "phone", "email", "age"];
     return header.map((key, index) => {
       return <th key={index}>{key.toUpperCase()}</th>;
     });
@@ -62,16 +62,27 @@ class Table extends Component {
   render() {
     //Whenever our class runs, render method will be called automatically, it may have already defined in the constructor behind the scene.
     return (
+
+      <>
+      <div>
+      <button onClick={e => this.sortByName(e, this.renderTableData[3])}>Sort by Name</button>
+
+      <button onClick={e => this.sortById(e, this.renderTableData[1])}>Sort by Id</button>
+
+      </div>
       <div>
         <table id="employees">
-          <tbody>
-            <tr>
+          <thead>
+          <tr>
               {this.renderTableHeader()}
             </tr>
+          </thead>
+          <tbody>
             {this.renderTableData()}
           </tbody>
         </table>
       </div>
+      </>
     );
   }
 }
